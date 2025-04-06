@@ -37,6 +37,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         DB::beginTransaction();
         try{
             $old_year = $request->old_year;
