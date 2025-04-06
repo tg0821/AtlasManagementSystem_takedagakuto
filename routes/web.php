@@ -21,6 +21,8 @@ use App\Http\Controllers\Authenticated\Users\UsersController;
 */
 
 require __DIR__.'/auth.php';
+// 新規会員登録
+Route::Post(('registerPost'),[RegistersUserController::class,'create']);
 
 Route::group(['middleware' => 'auth'], function(){
     Route::namespace('Authenticated')->group(function(){
