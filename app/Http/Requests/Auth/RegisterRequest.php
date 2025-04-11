@@ -27,18 +27,36 @@ class RegisterRequest extends FormRequest
         return [
         'over_name'=>'required|string|max:10',
         'under_name'=>'required|string|max:10',
-        'over_name_kana'=>'required|string|regex:/^[ァ-ンヴー]+$/|max:10',
-        'under_name_kana'=>'required|string|regex:/^[ァ-ンヴー]+$/|max:10',
+        'over_name_kana'=>'required|string|regex:/\A[ァ-ヴー]+\z/u|max:10',
+        'under_name_kana'=>'required|string|regex:/\A[ァ-ヴー]+\z/u|max:10',
         'mail_address'=>'required|max:100|email|unique:users,mail_address',
         'sex'=>'required|in:1,2,3',
         'role'=>'required|in:1,2,3,4',
         'password'=>'required|min:8|max:30|confirmed',
-        'old_year'=>'required|integer|min:2000|max:'. $yearNow,
-        'old_month'=>'required|integer|between:1,12',
-        'old_day'=>'required|integer|between:1,31',
-
+         // 仮想的なフィールドとしてまとめる
+        'old_year' => 'required|integer',
+        'old_month' => 'required|integer',
+        'old_day' => 'required|integer',
         ];
     }
+public function withValidator($validator)
+{
+    $validator->after(function ($validator) {
+        $year = $this->input('old_year');
+        $month = $this->input('old_month');
+        $day = $this->input('old_day');
+
+        if (!checkdate((int)$month, (int)$day, (int)$year)) {
+            $validator->errors()->add('birth_date', '正しい日付を入力してください。');
+            return;
+        }
+
+        $date = strtotime("$year-$month-$day");
+        if ($date < strtotime('2000-01-01') || $date > time()) {
+            $validator->errors()->add('birth_date', '2000年1月1日から今日までの間で入力してください。');
+        }
+    });
+}
 
     public function messages(): array
     {
@@ -125,22 +143,5 @@ class RegisterRequest extends FormRequest
             'old_month' => '生月',
             'old_day' => '生日',
         ];
-    }
-    public function withValidator($validator)
-    {
-        $validator->after(function ($validator) {
-            $year = $this->input('old_year');
-            $month = $this->input('old_month');
-            $day = $this->input('old_day');
-
-            if (!checkdate((int)$month, (int)$day, (int)$year)) {
-                $validator->errors()->add('old_day', '正しい日付を入力してください。');
-            }
-
-            $date = strtotime("$year-$month-$day");
-            if ($date < strtotime('2000-01-01') || $date > time()) {
-                $validator->errors()->add('old_year', '2000年1月1日から今日までの間で入力してください。');
-            }
-        });
     }
 }
