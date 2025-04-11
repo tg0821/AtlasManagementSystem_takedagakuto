@@ -34,9 +34,11 @@ class RegisterRequest extends FormRequest
         'role'=>'required|in:1,2,3,4',
         'password'=>'required|min:8|max:30|confirmed',
          // 仮想的なフィールドとしてまとめる
-        'old_year' => 'required|integer',
-        'old_month' => 'required|integer',
-        'old_day' => 'required|integer',
+        // 'old_year' => 'required|integer',
+        // 'old_month' => 'required|integer',
+        // 'old_day' => 'required|integer',
+
+
         ];
     }
 public function withValidator($validator)
@@ -57,6 +59,7 @@ public function withValidator($validator)
         }
     });
 }
+
 
     public function messages(): array
     {
@@ -105,43 +108,22 @@ public function withValidator($validator)
         'password.max' => 'パスワードは30文字以内で入力してください。',
         'password.confirmed' => '確認用パスワードが一致しません。',
 
-        // 生年月日
-        'old_year.required' => '生年を入力してください。',
-        'old_year.integer' => '生年は整数で入力してください。',
-        'old_year.min' => '2000年以降の年を入力してください。',
-        'old_year.max' => '今年（:max）以下の年を入力してください。',
+        // // 生年月日
+        // 'old_year.required' => '生年を入力してください。',
+        // 'old_year.integer' => '生年は整数で入力してください。',
+        // 'old_year.min' => '2000年以降の年を入力してください。',
+        // 'old_year.max' => '今年（:max）以下の年を入力してください。',
 
-        'old_month.required' => '生月を入力してください。',
-        'old_month.integer' => '生月は整数で入力してください。',
-        'old_month.between' => '生月は1〜12の間で入力してください。',
+        // 'old_month.required' => '生月を入力してください。',
+        // 'old_month.integer' => '生月は整数で入力してください。',
+        // 'old_month.between' => '生月は1〜12の間で入力してください。',
 
-        'old_day.required' => '生日を入力してください。',
-        'old_day.integer' => '生日は整数で入力してください。',
-        'old_day.between' => '生日は1〜31の間で入力してください。',
+        // 'old_day.required' => '生日を入力してください。',
+        // 'old_day.integer' => '生日は整数で入力してください。',
+        // 'old_day.between' => '生日は1〜31の間で入力してください。',
 
         // 日付チェック
-        'old_day.date_check' => '正しい日付を入力してください。'
-        ];
-    }
-       /**
-     * Get custom attribute names for validation error messages.
-     *
-     * @return array
-     */
-    public function attributes()
-    {
-        return [
-            'over_name' => '姓',
-            'under_name' => '名',
-            'over_name_kana' => '姓（カナ）',
-            'under_name_kana' => '名（カナ）',
-            'mail_address' => 'メールアドレス',
-            'sex' => '性別',
-            'role' => '役割',
-            'password' => 'パスワード',
-            'old_year' => '生年',
-            'old_month' => '生月',
-            'old_day' => '生日',
+        // 'old_day.date_check' => '正しい日付を入力してください。'
         ];
     }
 }
