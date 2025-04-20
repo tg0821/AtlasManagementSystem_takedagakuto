@@ -13,6 +13,7 @@ use App\Models\Users\User;
 use App\Http\Requests\BulletinBoard\PostFormRequest;
 use Auth;
 
+
 class PostsController extends Controller
 {
     public function show(Request $request){
@@ -44,7 +45,8 @@ class PostsController extends Controller
     }
 
     public function postInput(){
-        $main_categories = MainCategory::get();
+        // $main_categories = MainCategory::get();
+        $main_categories = MainCategory::with('subCategories')->get();
         return view('authenticated.bulletinboard.post_create', compact('main_categories'));
     }
 
@@ -57,7 +59,13 @@ class PostsController extends Controller
         return redirect()->route('post.show');
     }
 
-    public function postEdit(Request $request){
+    public function postEdit(PostFormRequest $request){
+        // RequestからPostFormRequestに変更
+            // バリデーション
+         $request->validate([
+        'post_title' => 'required|string|max:100', // post_titleが必須、文字列で最大100文字
+        'post_body' => 'required|string|max:2000', // post_bodyが必須、文字列で最大2000文字
+        ]);
         Post::where('id', $request->post_id)->update([
             'post_title' => $request->post_title,
             'post' => $request->post_body,
