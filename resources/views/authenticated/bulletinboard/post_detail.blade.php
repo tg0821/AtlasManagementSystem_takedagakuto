@@ -7,8 +7,11 @@
           <div>
           </div>
           <div>
+          <!-- 自分の投稿のみ表示されるようにする -->
+          @if ($post->user_id === Auth::id()) <!-- 投稿のユーザーIDが現在のユーザーIDと一致する場合 -->
             <span class="edit-modal-open" post_title="{{ $post->post_title }}" post_body="{{ $post->post }}" post_id="{{ $post->id }}">編集</span>
             <a href="{{ route('post.delete', ['id' => $post->id]) }}">削除</a>
+          @endif
           </div>
         </div>
 

@@ -99,34 +99,60 @@ class PostsController extends Controller
 
     public function likeBulletinBoard(){
         $like_post_id = Like::with('users')->where('like_user_id', Auth::id())->get('like_post_id')->toArray();
-        $posts = Post::with('user')->whereIn('id', $like_post_id)->get();
+        $posts = Post::with('user')->withCount('likes')
+        ->whereIn('id', $like_post_id)
+        ->get();
         $like = new Like;
         return view('authenticated.bulletinboard.post_like', compact('posts', 'like'));
     }
 
+    // public function postLike(Request $request){
+    //     $user_id = Auth::id();
+    //     $post_id = $request->post_id;
+
+    //     $like = new Like;
+
+    //     $like->like_user_id = $user_id;
+    //     $like->like_post_id = $post_id;
+    //     $like->save();
+
+    //     return response()->json();
+    // }
+
+    // public function postUnLike(Request $request){
+    //     $user_id = Auth::id();
+    //     $post_id = $request->post_id;
+
+    //     $like = new Like;
+
+    //     $like->where('like_user_id', $user_id)
+    //          ->where('like_post_id', $post_id)
+    //          ->delete();
+
+    //     return response()->json();
+    // }
+
+    // 一度追加
     public function postLike(Request $request){
-        $user_id = Auth::id();
-        $post_id = $request->post_id;
+    Like::create([
+        'like_user_id' => Auth::id(),
+        'like_post_id' => $request->post_id,
+    ]);
 
-        $like = new Like;
+    // 最新のいいね数を取得
+    $likeCount = Like::where('like_post_id', $request->post_id)->count();
 
-        $like->like_user_id = $user_id;
-        $like->like_post_id = $post_id;
-        $like->save();
+    return response()->json(['like_count' => $likeCount]);
+}
 
-        return response()->json();
-    }
+public function postUnLike(Request $request){
+    Like::where('like_user_id', Auth::id())
+        ->where('like_post_id', $request->post_id)
+        ->delete();
 
-    public function postUnLike(Request $request){
-        $user_id = Auth::id();
-        $post_id = $request->post_id;
+    $likeCount = Like::where('like_post_id', $request->post_id)->count();
 
-        $like = new Like;
+    return response()->json(['like_count' => $likeCount]);
+}
 
-        $like->where('like_user_id', $user_id)
-             ->where('like_post_id', $post_id)
-             ->delete();
-
-        return response()->json();
-    }
 }
