@@ -34,6 +34,6 @@ class Post extends Model
 
     // いいね数
     public function likes(){
-    return $this->hasMany(Like::class);
+    return $this->hasMany(Like::class,'like_post_id');
 }
 }

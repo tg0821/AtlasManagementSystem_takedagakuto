@@ -8,12 +8,14 @@
           </div>
           <div>
           <!-- 自分の投稿のみ表示されるようにする -->
-      @error('post_title')
-       <div class="error text-danger">{{ $title }}</div>
-      @enderror
-      @error('post_body')
-       <div class="error text-danger">{{ $message }}</div>
-      @enderror
+@error('post_title')
+  <div class="error text-danger">{{ $message }}</div>
+@enderror
+
+@error('post_body')
+  <div class="error text-danger">{{ $message }}</div>
+@enderror
+
           @if ($post->user_id === Auth::id()) <!-- 投稿のユーザーIDが現在のユーザーIDと一致する場合 -->
             <span class="edit-modal-open" post_title="{{ $post->post_title }}" post_body="{{ $post->post }}" post_id="{{ $post->id }}">編集</span>
             <a href="{{ route('post.delete', ['id' => $post->id]) }}"onclick="return confirm('本当に削除してもよろしいですか？')">削除</a>
@@ -51,6 +53,16 @@
     <div class="comment_container border m-5">
       <div class="comment_area p-3">
         <p class="m-0">コメントする</p>
+        <!-- バリデーションエラーメッセージ -->
+        @if ($errors->has('comment'))
+            <div class="text-danger">
+                <ul>
+                    @foreach ($errors->get('comment') as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <textarea class="w-100" name="comment" form="commentRequest"></textarea>
         <input type="hidden" name="post_id" form="commentRequest" value="{{ $post->id }}">
         <input type="submit" class="btn btn-primary" form="commentRequest" value="投稿">

@@ -11,29 +11,31 @@ use App\Models\Posts\PostComment;
 use App\Models\Posts\Like;
 use App\Models\Users\User;
 use App\Http\Requests\BulletinBoard\PostFormRequest;
+use App\Http\Requests\BulletinBoard\CommentFormRequest;
+// 上記コメントフォームリクエストは新たに追加
 use Auth;
 
 
 class PostsController extends Controller
 {
     public function show(Request $request){
-        $posts = Post::with('user', 'postComments')->get();
+        $posts = Post::with('user', 'postComments','likes')->get();
         $categories = MainCategory::get();
         $like = new Like;
         $post_comment = new Post;
         if(!empty($request->keyword)){
-            $posts = Post::with('user', 'postComments')
+            $posts = Post::with('user', 'postComments','likes')
             ->where('post_title', 'like', '%'.$request->keyword.'%')
             ->orWhere('post', 'like', '%'.$request->keyword.'%')->get();
         }else if($request->category_word){
             $sub_category = $request->category_word;
-            $posts = Post::with('user', 'postComments')->get();
+            $posts = Post::with('user', 'postComments','likes')->get();
         }else if($request->like_posts){
             $likes = Auth::user()->likePostId()->get('like_post_id');
-            $posts = Post::with('user', 'postComments')
+            $posts = Post::with('user', 'postComments','likes')
             ->whereIn('id', $likes)->get();
         }else if($request->my_posts){
-            $posts = Post::with('user', 'postComments')
+            $posts = Post::with('user', 'postComments','likes')
             ->where('user_id', Auth::id())->get();
         }
         return view('authenticated.bulletinboard.posts', compact('posts', 'categories', 'like', 'post_comment'));
@@ -62,10 +64,10 @@ class PostsController extends Controller
     public function postEdit(PostFormRequest $request){
         // RequestからPostFormRequestに変更
             // バリデーション
-         $request->validate([
-        'post_title' => 'required|string|max:100', // post_titleが必須、文字列で最大100文字
-        'post_body' => 'required|string|max:2000', // post_bodyが必須、文字列で最大2000文字
-        ]);
+        //  $request->validate([
+        // 'post_title' => 'required|string|max:100', // post_titleが必須、文字列で最大100文字
+        // 'post_body' => 'required|string|max:2000', // post_bodyが必須、文字列で最大2000文字
+        // ]);
         Post::where('id', $request->post_id)->update([
             'post_title' => $request->post_title,
             'post' => $request->post_body,
@@ -82,7 +84,7 @@ class PostsController extends Controller
         return redirect()->route('post.input');
     }
 
-    public function commentCreate(Request $request){
+    public function commentCreate(CommentFormRequest $request){
         PostComment::create([
             'post_id' => $request->post_id,
             'user_id' => Auth::id(),
@@ -99,60 +101,36 @@ class PostsController extends Controller
 
     public function likeBulletinBoard(){
         $like_post_id = Like::with('users')->where('like_user_id', Auth::id())->get('like_post_id')->toArray();
-        $posts = Post::with('user')->withCount('likes')
-        ->whereIn('id', $like_post_id)
-        ->get();
+        $posts = Post::with('user')->whereIn('id', $like_post_id)->get();
         $like = new Like;
         return view('authenticated.bulletinboard.post_like', compact('posts', 'like'));
     }
 
-    // public function postLike(Request $request){
-    //     $user_id = Auth::id();
-    //     $post_id = $request->post_id;
 
-    //     $like = new Like;
-
-    //     $like->like_user_id = $user_id;
-    //     $like->like_post_id = $post_id;
-    //     $like->save();
-
-    //     return response()->json();
-    // }
-
-    // public function postUnLike(Request $request){
-    //     $user_id = Auth::id();
-    //     $post_id = $request->post_id;
-
-    //     $like = new Like;
-
-    //     $like->where('like_user_id', $user_id)
-    //          ->where('like_post_id', $post_id)
-    //          ->delete();
-
-    //     return response()->json();
-    // }
-
-    // 一度追加
     public function postLike(Request $request){
-    Like::create([
-        'like_user_id' => Auth::id(),
-        'like_post_id' => $request->post_id,
-    ]);
+         $user_id = Auth::id();
+         $post_id = $request->post_id;
 
-    // 最新のいいね数を取得
-    $likeCount = Like::where('like_post_id', $request->post_id)->count();
+         $like = new Like;
 
-    return response()->json(['like_count' => $likeCount]);
-}
+         $like->like_user_id = $user_id;
+         $like->like_post_id = $post_id;
+         $like->save();
 
-public function postUnLike(Request $request){
-    Like::where('like_user_id', Auth::id())
-        ->where('like_post_id', $request->post_id)
-        ->delete();
+         return response()->json();
+     }
 
-    $likeCount = Like::where('like_post_id', $request->post_id)->count();
+     public function postUnLike(Request $request){
+         $user_id = Auth::id();
+         $post_id = $request->post_id;
 
-    return response()->json(['like_count' => $likeCount]);
-}
+         $like = new Like;
+
+         $like->where('like_user_id', $user_id)
+              ->where('like_post_id', $post_id)
+              ->delete();
+
+         return response()->json();
+     }
 
 }
