@@ -8,13 +8,18 @@
           </div>
           <div>
           <!-- 自分の投稿のみ表示されるようにする -->
+      @error('post_title')
+       <div class="error text-danger">{{ $title }}</div>
+      @enderror
+      @error('post_body')
+       <div class="error text-danger">{{ $message }}</div>
+      @enderror
           @if ($post->user_id === Auth::id()) <!-- 投稿のユーザーIDが現在のユーザーIDと一致する場合 -->
             <span class="edit-modal-open" post_title="{{ $post->post_title }}" post_body="{{ $post->post }}" post_id="{{ $post->id }}">編集</span>
-            <a href="{{ route('post.delete', ['id' => $post->id]) }}">削除</a>
+            <a href="{{ route('post.delete', ['id' => $post->id]) }}"onclick="return confirm('本当に削除してもよろしいですか？')">削除</a>
           @endif
           </div>
         </div>
-
         <div class="contributor d-flex">
           <p>
             <span>{{ $post->user->over_name }}</span>
@@ -61,15 +66,9 @@
   <div class="w-100">
     <div class="modal-inner-title w-50 m-auto">
       <input type="text" name="post_title" placeholder="タイトル" class="w-100" value="{{ old('post_title') }}">
-      @error('post_title')
-       <div class="error text-danger">{{ $message }}</div>
-      @enderror
     </div>
     <div class="modal-inner-body w-50 m-auto pt-3 pb-3">
       <textarea placeholder="投稿内容" name="post_body" class="w-100">{{ old('post_body') }}</textarea>
-      @error('post_body')
-       <div class="error text-danger">{{ $message }}</div>
-      @enderror
     </div>
     <div class="w-50 m-auto edit-modal-btn d-flex">
       <a class="js-modal-close btn btn-danger d-inline-block" href="">閉じる</a>
