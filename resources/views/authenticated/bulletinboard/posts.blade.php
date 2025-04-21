@@ -30,20 +30,37 @@
     @endforeach
   </div>
   <div class="other_area border w-25">
-    <div class="border m-4">
-      <div class=""><a href="{{ route('post.input') }}">投稿</a></div>
-      <div class="">
+  <div class="border m-4">
+    <!-- 投稿作成リンク -->
+    <div><a href="{{ route('post.input') }}">投稿</a></div>
+
+    <!-- キーワード検索フォーム -->
+    <div class="">
         <input type="text" placeholder="キーワードを検索" name="keyword" form="postSearchRequest">
         <input type="submit" value="検索" form="postSearchRequest">
-      </div>
-      <input type="submit" name="like_posts" class="category_btn" value="いいねした投稿" form="postSearchRequest">
-      <input type="submit" name="my_posts" class="category_btn" value="自分の投稿" form="postSearchRequest">
-      <ul>
-        @foreach($categories as $category)
-        <li class="main_categories" category_id="{{ $category->id }}"><span>{{ $category->main_category }}<span></li>
-        @endforeach
-      </ul>
     </div>
+
+    <!-- いいねした投稿や自分の投稿ボタン -->
+    <input type="submit" name="like_posts" class="category_btn" value="いいねした投稿" form="postSearchRequest">
+    <input type="submit" name="my_posts" class="category_btn" value="自分の投稿" form="postSearchRequest">
+
+    <!-- メインカテゴリーとそのサブカテゴリーを表示 -->
+<ul>
+    @foreach($categories as $category)
+        <li class="main_categories" category_id="{{ $category->id }}">
+            <span>{{ $category->main_category }}</span>
+            <ul>
+                @foreach($category->subCategories as $subCategory)
+                    <li>
+                        <a href="{{ route('post.show') }}?category_word={{ $subCategory->id }}">
+                            {{ $subCategory->sub_category }}
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        </li>
+    @endforeach
+</ul>
   </div>
   <form action="{{ route('post.show') }}" method="get" id="postSearchRequest"></form>
 </div>
