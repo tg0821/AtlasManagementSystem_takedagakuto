@@ -21,35 +21,55 @@ use Auth;
 class PostsController extends Controller
 {
 
-    public function show(Request $request){
-    $posts = Post::with('user', 'postComments', 'likes')->get();
-    $categories = MainCategory::all();  // 修正：get() を all() に変更
+public function show(Request $request)
+{
     $like = new Like;
     $post_comment = new Post;
 
-    if(!empty($request->keyword)){
-        $posts = Post::with('user', 'postComments', 'likes')
-            ->where('post_title', 'like', '%'.$request->keyword.'%')
-            ->orWhere('post', 'like', '%'.$request->keyword.'%')
-            ->get();
-    } else if($request->category_word) {
-        $sub_category = $request->category_word;
-        $posts = Post::with('user', 'postComments', 'likes')
-            ->whereHas('subCategories', function ($query) use ($sub_category) {
-                $query->where('sub_category', $sub_category);
-            })
-            ->get();
-    } else if($request->like_posts) {
-        $likes = Auth::user()->likePostId()->get('like_post_id');
-        $posts = Post::with('user', 'postComments', 'likes')
-            ->whereIn('id', $likes)->get();
-    } else if($request->my_posts) {
-        $posts = Post::with('user', 'postComments', 'likes')
-            ->where('user_id', Auth::id())->get();
+    // 全カテゴリーを取得（メイン + サブ）
+    $categories = MainCategory::with('subCategories')->get();
+
+    // 投稿取得の初期状態
+    $posts = Post::with('user', 'postComments', 'likes');
+
+    // ① 検索キーワードがサブカテゴリー名と完全一致
+    if (!empty($request->keyword)) {
+        $subCategory = SubCategory::where('sub_category', $request->keyword)->first();
+        if ($subCategory) {
+            // サブカテゴリーが見つかった場合、そのサブカテゴリーに属する投稿のみ取得
+            $posts = $subCategory->posts()->with('user', 'postComments', 'likes');
+        } else {
+            // タイトルまたは本文で部分一致検索
+            $posts = $posts->where('post_title', 'like', '%' . $request->keyword . '%')
+                           ->orWhere('post', 'like', '%' . $request->keyword . '%');
+        }
     }
+
+    // ③ サブカテゴリークリック（category_word にサブカテゴリー名が入る）
+    if ($request->category_word) {
+        $posts = $posts->whereHas('subCategories', function ($query) use ($request) {
+            // サブカテゴリー名で絞り込み
+            $query->where('sub_category', $request->category_word);
+        });
+    }
+
+    // いいねした投稿
+    if ($request->like_posts) {
+        $like_ids = Auth::user()->likePostId()->pluck('like_post_id');
+        $posts = $posts->whereIn('id', $like_ids);
+    }
+
+    // 自分の投稿
+    if ($request->my_posts) {
+        $posts = $posts->where('user_id', Auth::id());
+    }
+
+    // クエリビルダ完了 → 実行
+    $posts = $posts->get();
 
     return view('authenticated.bulletinboard.posts', compact('posts', 'categories', 'like', 'post_comment'));
 }
+
 
 
     public function postDetail($post_id){
@@ -69,6 +89,9 @@ class PostsController extends Controller
             'post_title' => $request->post_title,
             'post' => $request->post_body
         ]);
+        // サブカテゴリーとの関連付け
+        $post->subCategories()->attach($request->post_category_id);
+        // dd($post->subCategories); // ← 保存直後に確認
         return redirect()->route('post.show');
     }
 
