@@ -16,6 +16,7 @@ class CalendarController extends Controller
     public function show(){
         $calendar = new CalendarView(time());
         return view('authenticated.calendar.general.calendar', compact('calendar'));
+                    //generalフォルダに入っているcalendar.blade.phpに戻る
     }
 
     public function reserve(Request $request){
