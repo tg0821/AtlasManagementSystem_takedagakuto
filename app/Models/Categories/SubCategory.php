@@ -3,7 +3,7 @@
 namespace App\Models\Categories;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\Posts\Post; // ここで正しい名前空間を指定
 
 class SubCategory extends Model
 {

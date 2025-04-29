@@ -11,6 +11,7 @@ use App\Models\Users\Subjects;
 use App\Searchs\DisplayUsers;
 use App\Searchs\SearchResultFactories;
 
+
 class UsersController extends Controller
 {
 
