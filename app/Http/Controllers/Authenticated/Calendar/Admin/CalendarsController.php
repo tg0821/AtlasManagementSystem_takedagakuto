@@ -19,10 +19,17 @@ class CalendarsController extends Controller
         return view('authenticated.calendar.admin.calendar', compact('calendar'));
     }
 
-    public function reserveDetail($date, $part){
-        $reservePersons = ReserveSettings::with('users')->where('setting_reserve', $date)->where('setting_part', $part)->get();
-        return view('authenticated.calendar.admin.reserve_detail', compact('reservePersons', 'date', 'part'));
-    }
+    // ここのメソッドでreserve_detailblade.phpに新しくuserの名前とか場所の値を持ってきた
+ public function reserveDetail($date, $part){
+    $reserveSetting = ReserveSettings::with('users')
+        ->where('setting_reserve', $date)
+        ->where('setting_part', $part)
+        ->first();
+
+    $users = $reserveSetting ? $reserveSetting->users : collect(); //ここからuser情報取得
+
+    return view('authenticated.calendar.admin.reserve_detail', compact('users', 'date', 'part'));
+}
 
     public function reserveSettings(){
         $calendar = new CalendarSettingView(time());
