@@ -94,24 +94,24 @@ if ($dayDate->lt($today->startOfDay())) {
             }
             // 表示部分
 
-       if ($dayDate->lt($today->startOfDay()))  {     //$dayDate->lt(Carbon::today()
-       // 過去日（今日より前） → 削除ボタンを出さない
-         $html[] = '<p class="m-auto p-0 w-75" style="font-size:12px">' . $reservePart . '</p>';
-         $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
-      } else {
-       // 今日・未来 → 削除ボタンを出す
-         $html[] = '<button type="submit" class="btn btn-danger p-0 w-75" name="delete_date" style="font-size:12px" value="' . $reserveDate->setting_reserve . '">' . $reservePart . '</button>';
-         $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
-      }
-        }
+    if ($dayDate->lt($today->startOfDay()))  {     //$dayDate->lt(Carbon::today()
+    // 過去日（今日より前） → 削除ボタンを出さない
+    $html[] = '<p class="m-auto p-0 w-75" style="font-size:12px">' . $reservePart . '</p>';
+    $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
     } else {
-        $html[] = $day->selectPart($day->everyDay());
+    // 今日・未来 → 削除ボタンを出す
+    $html[] = '<button type="submit" class="btn btn-danger p-0 w-75" name="delete_date" style="font-size:12px" value="' . $reserveDate->setting_reserve . '">' . $reservePart . '</button>';
+    $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
+    }
+    }
+    } else {
+    $html[] = $day->selectPart($day->everyDay());
 
     }
     $html[] = $day->getDate();
     $html[] = '</td>';
-        }
-      $html[] = '</tr>';
+    }
+    $html[] = '</tr>';
     }
     $html[] = '</tbody>';
     $html[] = '</table>';

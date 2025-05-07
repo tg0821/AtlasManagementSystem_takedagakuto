@@ -23,26 +23,32 @@ class CalendarWeekDay{
     return $this->carbon->format("Y-m-d");
   }
 
-  function dayPartCounts($ymd){
+function dayPartCounts($ymd){
     $html = [];
     $one_part = ReserveSettings::with('users')->where('setting_reserve', $ymd)->where('setting_part', '1')->first();
     $two_part = ReserveSettings::with('users')->where('setting_reserve', $ymd)->where('setting_part', '2')->first();
     $three_part = ReserveSettings::with('users')->where('setting_reserve', $ymd)->where('setting_part', '3')->first();
 
+    // 各部の予約人数を取得（数字のみ）
+    $one_part_count = $one_part?->users->count() ?? 0;
+    $two_part_count = $two_part?->users->count() ?? 0;
+    $three_part_count = $three_part?->users->count() ?? 0;
+
     $html[] = '<div class="text-left">';
     if($one_part){
-      $html[] = '<p class="day_part m-0 pt-1">1部</p>';
+        $html[] = '<p class="day_part m-0 pt-1">1部 ' . $one_part_count . '</p>';
     }
     if($two_part){
-      $html[] = '<p class="day_part m-0 pt-1">2部</p>';
+        $html[] = '<p class="day_part m-0 pt-1">2部 ' . $two_part_count . '</p>';
     }
     if($three_part){
-      $html[] = '<p class="day_part m-0 pt-1">3部</p>';
+        $html[] = '<p class="day_part m-0 pt-1">3部 ' . $three_part_count . '</p>';
     }
     $html[] = '</div>';
 
     return implode("", $html);
-  }
+}
+
 
 
   function onePartFrame($day){
@@ -75,6 +81,7 @@ class CalendarWeekDay{
 
   //
   function dayNumberAdjustment(){
+
     $html = [];
     $html[] = '<div class="adjust-area">';
     $html[] = '<p class="d-flex m-0 p-0">1部<input class="w-25" style="height:20px;" name="1" type="text" form="reserveSetting"></p>';
