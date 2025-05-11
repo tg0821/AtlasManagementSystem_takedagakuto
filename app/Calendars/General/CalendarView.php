@@ -99,8 +99,8 @@ if(in_array($day->everyDay(), $day->authReserveDay())){
             $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
         } else {
             // 今日・未来 → 削除ボタンを出す
-            $html[] = '<button type="submit" class="btn btn-danger p-0 w-75" name="delete_date" style="font-size:12px" value="' . $reserveDate->setting_reserve . '">' . $reservePart . '</button>';
-            $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
+        $html[] = '<button type="button" class="btn btn-danger p-0 w-75 delete-button" style="font-size:12px" value="' . $reserveDate->setting_reserve . '" data-part="' . $reservePart . '">' . $reservePart . '</button>';
+        $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
         }
     }
 } else {

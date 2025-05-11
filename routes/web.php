@@ -62,7 +62,7 @@ Route::group(['middleware' => 'auth'], function(){
             Route::get('user/profile/{id}', [UsersController::class, 'userProfile'])->name('user.profile');
             Route::post('user/profile/edit', [UsersController::class, 'userEdit'])->name('user.edit');
         });
-        // // 削除のルート
-        // Route::post('/reservation/delete', [CalendarsController::class, 'deleteReservation'])->name('reservation.delete');
+        // 削除のルート
+        Route::post('/reservation/delete', [CalendarsController::class, 'deleteReservation'])->name('reservation.delete');
     });
 });
