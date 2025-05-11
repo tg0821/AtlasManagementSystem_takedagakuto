@@ -69,47 +69,48 @@ if ($dayDate->lt($today->startOfDay())) {
     continue; // この日付はスキップして次の処理に進む
 }
 
-        $startDay = $this->carbon->copy()->format("Y-m-01");
-        $toDay = $this->carbon->copy()->format("Y-m-d");
+$startDay = $this->carbon->copy()->format("Y-m-01");
+$toDay = $this->carbon->copy()->format("Y-m-d");
 
-        if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()){
-          $html[] = '<td class="calendar-td">';
-        }else{
-          $html[] = '<td class="calendar-td '.$day->getClassName().'">';
+if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()){
+  $html[] = '<td class="calendar-td">';
+}else{
+  $html[] = '<td class="calendar-td '.$day->getClassName().'">';
+}
+$html[] = $day->render();
+
+// 予約が存在する場合に表示する処理
+if(in_array($day->everyDay(), $day->authReserveDay())){
+    $reserveDate = $day->authReserveDate($day->everyDay())->first(); // 予約情報を取得
+    if ($reserveDate) {
+        $reservePart = $reserveDate->setting_part;
+        if($reservePart == 1){
+            $reservePart = "リモ1部";
+        } elseif($reservePart == 2){
+            $reservePart = "リモ2部";
+        } elseif($reservePart == 3){
+            $reservePart = "リモ3部";
         }
-        $html[] = $day->render();
 
-    // 予約が存在する場合に表示する処理
-    if(in_array($day->everyDay(), $day->authReserveDay())){
-        $reserveDate = $day->authReserveDate($day->everyDay())->first(); // 予約情報を取得
-        if ($reserveDate) {
-            $reservePart = $reserveDate->setting_part;
-            // 予約部数を判定
-            if($reservePart == 1){
-                $reservePart = "リモ1部";
-            } else if($reservePart == 2){
-                $reservePart = "リモ2部";
-            } else if($reservePart == 3){
-                $reservePart = "リモ3部";
-            }
-            // 表示部分
-
-    if ($dayDate->lt($today->startOfDay()))  {     //$dayDate->lt(Carbon::today()
-    // 過去日（今日より前） → 削除ボタンを出さない
-    $html[] = '<p class="m-auto p-0 w-75" style="font-size:12px">' . $reservePart . '</p>';
-    $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
-    } else {
-    // 今日・未来 → 削除ボタンを出す
-    $html[] = '<button type="submit" class="btn btn-danger p-0 w-75" name="delete_date" style="font-size:12px" value="' . $reserveDate->setting_reserve . '">' . $reservePart . '</button>';
-    $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
+        // 日付が過去かどうかでボタン表示を分岐
+        if ($dayDate->lt($today->startOfDay())) {
+            // 過去日（今日より前） → 削除ボタンを出さない
+            $html[] = '<p class="m-auto p-0 w-75" style="font-size:12px">' . $reservePart . '</p>';
+            $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
+        } else {
+            // 今日・未来 → 削除ボタンを出す
+            $html[] = '<button type="submit" class="btn btn-danger p-0 w-75" name="delete_date" style="font-size:12px" value="' . $reserveDate->setting_reserve . '">' . $reservePart . '</button>';
+            $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
+        }
     }
-    }
-    } else {
+} else {
+    // 予約がなければ選択肢（リモ1部〜3部）を表示
     $html[] = $day->selectPart($day->everyDay());
+}
 
-    }
-    $html[] = $day->getDate();
-    $html[] = '</td>';
+$html[] = $day->getDate();
+$html[] = '</td>';
+
     }
     $html[] = '</tr>';
     }
