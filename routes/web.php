@@ -63,6 +63,6 @@ Route::group(['middleware' => 'auth'], function(){
             Route::post('user/profile/edit', [UsersController::class, 'userEdit'])->name('user.edit');
         });
         // 削除のルート
-        Route::post('/reservation/delete', [CalendarsController::class, 'deleteReservation'])->name('reservation.delete');
+        Route::post('/delete/calendar', [CalendarController::class, 'delete'])->name('calendar.general.delete');
     });
 });

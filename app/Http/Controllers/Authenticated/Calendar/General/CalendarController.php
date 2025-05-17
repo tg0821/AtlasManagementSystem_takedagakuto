@@ -36,4 +36,36 @@ class CalendarController extends Controller
         }
         return redirect()->route('calendar.general.show', ['user_id' => Auth::id()]);
     }
+// 削除のメソッド
+    public function delete(Request $request)
+{
+    DB::beginTransaction();
+    try {
+        $deleteDate = $request->input('delete_date'); // 例: "2025-05-10 2"
+        $datePart = explode(' ', $deleteDate);
+
+        if (count($datePart) !== 2) {
+            return redirect()->back()->with('error', '削除形式が不正です');
+        }
+
+        $date = $datePart[0]; // "2025-05-10"
+        $part = $datePart[1]; // "2"
+
+        $reserve = ReserveSettings::where('setting_reserve', $date)
+                                  ->where('setting_part', $part)
+                                  ->first();
+
+        if ($reserve) {
+            $reserve->users()->detach(Auth::id()); // 中間テーブルから削除
+            $reserve->increment('limit_users');    // 空き数を1つ戻す
+        }
+
+        DB::commit();
+        return redirect()->route('calendar.general.show')->with('message', '予約をキャンセルしました');
+    } catch (\Exception $e) {
+        DB::rollback();
+        return redirect()->back()->with('error', 'キャンセル処理に失敗しました');
+    }
+}
+
 }
