@@ -36,36 +36,45 @@ class CalendarController extends Controller
         }
         return redirect()->route('calendar.general.show', ['user_id' => Auth::id()]);
     }
-// 削除のメソッド
+
     public function delete(Request $request)
 {
     DB::beginTransaction();
     try {
-        $deleteDate = $request->input('delete_date'); // 例: "2025-05-10 2"
+
+        $deleteDate = $request->input('delete_date'); // "2025-05-14 2"
+        // dd($deleteDate);
         $datePart = explode(' ', $deleteDate);
 
         if (count($datePart) !== 2) {
             return redirect()->back()->with('error', '削除形式が不正です');
         }
 
-        $date = $datePart[0]; // "2025-05-10"
+        $date = $datePart[0]; // "2025-05-14"
         $part = $datePart[1]; // "2"
 
+        // 予約設定を取得
         $reserve = ReserveSettings::where('setting_reserve', $date)
                                   ->where('setting_part', $part)
                                   ->first();
 
-        if ($reserve) {
-            $reserve->users()->detach(Auth::id()); // 中間テーブルから削除
-            $reserve->increment('limit_users');    // 空き数を1つ戻す
+        if (!$reserve) {
+            DB::rollBack();
+            return redirect()->back()->with('error', '該当予約が見つかりませんでした');
         }
 
+        // 予約が存在していれば削除処理
+        $reserve->users()->detach(Auth::id()); // 中間テーブルから削除
+        $reserve->increment('limit_users'); // 枠を1つ戻す
+
         DB::commit();
-        return redirect()->route('calendar.general.show')->with('message', '予約をキャンセルしました');
+        return redirect()->route('calendar.general.show')
+                         ->with('message', '予約をキャンセルしました');
     } catch (\Exception $e) {
-        DB::rollback();
+        DB::rollBack();
         return redirect()->back()->with('error', 'キャンセル処理に失敗しました');
     }
 }
+
 
 }

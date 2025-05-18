@@ -51,14 +51,22 @@ document.addEventListener('DOMContentLoaded', function () {
     button.addEventListener('click', function (e) {
       e.preventDefault(); // フォームの送信をキャンセル
 
-      // ボタンの値を取得（例："2025-05-09 リモ2部"）
-      const reserveDate = this.value; // yyyy-mm-dd
-      const reservePart = this.dataset.part; // リモ⚪︎部
+      // console.log("削除ボタンが押されました");
 
-      // 日付部分と部（時間）を分割してモーダルに表示
+
+      // ボタンの値を取得（例："2025-05-09"）
+      const reserveDate = this.value; // yyyy-mm-dd
+      const reservePart = this.dataset.part; // リモ2部 → NG
+
+      // ✅ 部数（数字）だけを抽出（例: "リモ2部" → 2）
+      const partNumber = reservePart.replace(/[^0-9]/g, '');
+
+      // 日付と部（時間）を分割してモーダルに表示
       document.getElementById('deleteModalDate').textContent = `予約日：${reserveDate}`;
       document.getElementById('deleteModalTime').textContent = `時間：${reservePart}`;
-      document.getElementById('modalDeleteDateValue').value = reserveDate;
+      document.getElementById('modalDeleteDateValue').value = `${reserveDate} ${partNumber}`;
+
+      console.log("送信される値:", `${reserveDate} ${partNumber}`);
 
       // モーダル表示
       const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
@@ -66,8 +74,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 });
-
 </script>
+
   <!-- ✅ BootstrapのJS（最後に追加！） -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
