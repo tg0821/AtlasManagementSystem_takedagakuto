@@ -25,8 +25,8 @@ class CalendarView{
     $html[] = '<th class="border">水</th>';
     $html[] = '<th class="border">木</th>';
     $html[] = '<th class="border">金</th>';
-    $html[] = '<th class="border">土</th>';
-    $html[] = '<th class="border">日</th>';
+    $html[] = '<th class="border" style="color: #0000FF;">土</th>';
+    $html[] = '<th class="border" style="">日</th>';
     $html[] = '</tr>';
     $html[] = '</thead>';
     $html[] = '<tbody>';
@@ -36,18 +36,28 @@ class CalendarView{
     foreach($weeks as $week){
       $html[] = '<tr class="'.$week->getClassName().'">';
       $days = $week->getDays();
-      foreach($days as $day){
-        $startDay = $this->carbon->format("Y-m-01");
-        $toDay = $this->carbon->format("Y-m-d");
-        if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()){
-          $html[] = '<td class="past-day border">';
-        }else{
-          $html[] = '<td class="border '.$day->getClassName().'">';
-        }
-        $html[] = $day->render();
-        $html[] = $day->dayPartCounts($day->everyDay());
-        $html[] = '</td>';
-      }
+foreach($days as $day){
+    $startDay = $this->carbon->format("Y-m-01");
+    $toDay = $this->carbon->format("Y-m-d");
+
+    // 共通クラス構築
+    $dayClass = $day->getClassName(); // ← これが 'day-sun' や 'day-sat' を返す
+    $class = 'border ' . $dayClass;
+
+    // 過去日なら past-day を追加
+    if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()){
+        $class = 'past-day ' . $class;
+    }
+
+    // tdタグ出力
+    $html[] = '<td class="'.$class.'">';
+
+    // 日付出力
+    $html[] = '<p class="day calendar-day-number">'.$day->render().'</p>';
+    $html[] = $day->dayPartCounts($day->everyDay());
+    $html[] = '</td>';
+}
+
       $html[] = '</tr>';
     }
     $html[] = '</tbody>';

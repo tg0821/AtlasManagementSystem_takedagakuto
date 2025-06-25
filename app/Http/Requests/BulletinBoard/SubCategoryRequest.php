@@ -38,7 +38,7 @@ class SubCategoryRequest extends FormRequest
             // 'main_category_name.unique'   => '同じ名前のメインカテゴリーはすでに登録されています。',
             'main_category_id.required' => 'メインカテゴリーを選択してください。',
             'main_category_id.exists' => '選択されたメインカテゴリーが存在しません。',
-            'sub_category_name.required' => 'サブカテゴリー名は必須項目です。',
+            'sub_category_name.required' => 'サブカテゴリーは必ず入力してください。',
             'sub_category_name.string' => 'サブカテゴリー名は文字列で入力してください。',
             'sub_category_name.max' => 'サブカテゴリー名は100文字以内で入力してください。',
             'sub_category_name.unique' => '同じ名前のサブカテゴリーはすでに存在します。',

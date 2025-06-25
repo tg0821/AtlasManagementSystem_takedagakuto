@@ -30,7 +30,7 @@ class MainCategoryRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'main_category_name.required' => 'メインカテゴリー名は必須です。',
+            'main_category_name.required' => 'メインカテゴリーは必ず入力してください。',
             'main_category_name.string'   => 'メインカテゴリー名は文字列で入力してください。',
             'main_category_name.max'      => 'メインカテゴリー名は100文字以内で入力してください。',
             'main_category_name.unique'   => '同じ名前のメインカテゴリーはすでに登録されています。',

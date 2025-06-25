@@ -21,13 +21,13 @@ class CalendarView{
     $html[] = '<table class="table">';
     $html[] = '<thead>'; //テーブルのヘッダー部分を開始します。これにより、カレンダーの曜日（例：月、火、水、木、金、土、日）を表示する部分を作ります。
     $html[] = '<tr>'; //テーブルの行（<tr>）を開始します。この行は曜日を表示するためのものです。
-    $html[] = '<th>月</th>'; //月曜日の曜日を表示する <th>（ヘッダーセル）を追加します。同様に、火曜日から日曜日までの曜日も <th> タグで追加されます。
-    $html[] = '<th>火</th>';
-    $html[] = '<th>水</th>';
-    $html[] = '<th>木</th>';
-    $html[] = '<th>金</th>';
-    $html[] = '<th>土</th>';
-    $html[] = '<th>日</th>';
+    $html[] = '<th style=" border: 1px solid #dee2e6;;">月</th>'; //月曜日の曜日を表示する <th>（ヘッダーセル）を追加します。同様に、火曜日から日曜日までの曜日も <th> タグで追加されます。
+    $html[] = '<th style=" border: 1px solid #dee2e6;;">火</th>';
+    $html[] = '<th style=" border: 1px solid #dee2e6;;">水</th>';
+    $html[] = '<th style=" border: 1px solid #dee2e6;;">木</th>';
+    $html[] = '<th style=" border: 1px solid #dee2e6;;">金</th>';
+    $html[] = '<th style=" border: 1px solid #dee2e6;color: #0000FF;">土</th>';
+    $html[] = '<th style=" border: 1px solid #dee2e6;color: red;">日</th>';
     $html[] = '</tr>';
     $html[] = '</thead>';
     $html[] = '<tbody>'; //カレンダーの内容（週ごとの日付）を表示するためのテーブルボディ部分（<tbody>）を開始します。
@@ -48,8 +48,9 @@ class CalendarView{
 
 if ($dayDate->lt($today->startOfDay())) {
     // 昨日以前は過去として処理
-    $html[] = '<td class="calendar-td bg-secondary text-black" style="background-color: #eeedee !important;">';
-    $html[] = '<div>' . $dayDate->day . '日</div>';
+    $html[] = '<td class="calendar-td bg-secondary text-black '.$day->getClassName().'" style="background-color: #eeedee !important;">';
+
+    $html[] = '<div><span class="calendar-day-number">' . $dayDate->day . '日</span></div>';
     // 過去に予約していたか確認
     $reserveDate = $day->authReserveDate($day->everyDay())->first();
     if($reserveDate){
@@ -63,7 +64,7 @@ if ($dayDate->lt($today->startOfDay())) {
         }
         $html[] = '<div style="font-size: 12px;">' . $reservePart . '</div>';
     } else {
-        $html[] = '<div style="font-size: 12px;">受付終了</div>';
+        $html[] = '<div style="font-size: 12px; color:black">受付終了</div>';
     }
     $html[] = '</td>';
     continue; // この日付はスキップして次の処理に進む

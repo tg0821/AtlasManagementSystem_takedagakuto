@@ -1,6 +1,6 @@
 <x-guest-layout>
   <form action="{{ route('registerPost') }}" method="POST">
-    <div class="w-100 vh-100 d-flex" style="align-items:center; justify-content:center;">
+    <div class="w-100 vh-100 d-flex" style="align-items:center; justify-content:center;background-color: #ecf1f5;">
       <div class="w-25 vh-75 border p-3">
         <div class="register_form">
           <div class="d-flex mt-3" style="justify-content:space-between">
@@ -58,18 +58,18 @@
         @endif
         <div class="mt-3">
           <input type="radio" name="sex" class="sex" value="1">
-          <label style="font-size:13px">男性</label>
+          <label style="font-size:13px; margin-right: 40px">男性</label>
           <input type="radio" name="sex" class="sex" value="2">
-          <label style="font-size:13px">女性</label>
+          <label style="font-size:13px; margin-right: 40px">女性</label>
           <input type="radio" name="sex" class="sex" value="3">
-          <label style="font-size:13px">その他</label>
+          <label style="font-size:13px; margin-right: 40px">その他</label>
         </div>
         @if ($errors->has('birth_date'))
          <span class="text-danger">{{ $errors->first('birth_date') }}</span>
         @endif
         <div class="mt-3">
           <label class="d-block m-0 aa" style="font-size:13px">生年月日</label>
-          <select class="old_year" name="old_year">
+          <select class="old_year" name="old_year" style="border:none; border-bottom: 1px solid #2d88ff; width:90px">
             <option value="none">-----</option>
             <option value="1985">1985</option>
             <option value="1986">1986</option>
@@ -99,7 +99,7 @@
             <option value="2010">2010</option>
           </select>
           <label style="font-size:13px">年</label>
-          <select class="old_month" name="old_month">
+          <select class="old_month" name="old_month" style="border:none; border-bottom: 1px solid #2d88ff; width:90px">
             <option value="none">-----</option>
             <option value="01">1</option>
             <option value="02">2</option>
@@ -115,7 +115,7 @@
             <option value="12">12</option>
           </select>
           <label style="font-size:13px">月</label>
-          <select class="old_day" name="old_day">
+          <select class="old_day" name="old_day" style="border:none; border-bottom: 1px solid #2d88ff; width:90px">
             <option value="none">-----</option>
             <option value="01">1</option>
             <option value="02">2</option>
@@ -157,11 +157,11 @@
         @endif
           <label class="d-block m-0" style="font-size:13px">役職</label>
           <input type="radio" name="role" class="admin_role role" value="1">
-          <label style="font-size:13px">教師(国語)</label>
+          <label style="font-size:13px; margin-right:10px">教師(国語)</label>
           <input type="radio" name="role" class="admin_role role" value="2">
-          <label style="font-size:13px">教師(数学)</label>
+          <label style="font-size:13px; margin-right:10px">教師(数学)</label>
           <input type="radio" name="role" class="admin_role role" value="3">
-          <label style="font-size:13px">教師(英語)</label>
+          <label style="font-size:13px; margin-right:10px">教師(英語)</label>
           <input type="radio" name="role" class="other_role role" value="4">
           <label style="font-size:13px" class="other_role">生徒</label>
         </div>
@@ -193,7 +193,7 @@
           <input type="submit" class="btn btn-primary register_btn" disabled value="新規登録" onclick="return confirm('登録してよろしいですか？')">
         </div>
         <div class="text-center">
-          <a href="{{ route('loginView') }}">ログイン</a>
+          <a href="{{ route('loginView') }}">ログインはこちら</a>
         </div>
       </div>
       {{ csrf_field() }}

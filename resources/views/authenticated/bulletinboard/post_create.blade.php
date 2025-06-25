@@ -34,36 +34,36 @@
     <form action="{{ route('post.create') }}" method="post" id="postCreate">{{ csrf_field() }}</form>
   </div>
   @can('admin')
-  <div class="w-25 ml-auto mr-auto">
-    <div class="category_area mt-5 p-5">
+  <!-- <div class="w-25 ml-auto mr-auto" style="height:300px"> -->
+    <div class="category_area ml-auto mr-auto mt-5 p-5" style="height:400px; width=350px">
       <div class="">
-        <p class="m-0">メインカテゴリー</p>
         @if ($errors->has('main_category_name'))
-          <p class="text-danger">{{ $errors->first('main_category_name') }}</p>
+          <p class="text-danger" style="margin-bottom:0px">{{ $errors->first('main_category_name') }}</p>
         @endif
+        <p class="m-0">メインカテゴリー</p>
         <input type="text" class="w-100" name="main_category_name" form="mainCategoryRequest">
-        <input type="submit" value="追加" class="w-100 btn btn-primary p-0" form="mainCategoryRequest">
+        <input type="submit" value="追加" class="w-100 btn btn-primary p-0" style="margin-top:15px;"form="mainCategoryRequest">
       </div>
       <!-- サブカテゴリー追加 -->
       <div class="">
-        <p class="m-0">サブカテゴリー</p>
+        <p  style="margin-top:30px">サブカテゴリー</p>
            <!-- バリデーションエラー表示 -->
     @if ($errors->has('main_category_id'))
-      <p class="text-danger">{{ $errors->first('main_category_id') }}</p>
+      <p class="text-danger" style="margin-bottom:0px">{{ $errors->first('main_category_id') }}</p>
     @endif
     <!-- メインカテゴリー選択 -->
     <select name="main_category_id" class="w-100 mb-2" form="subCategoryRequest">
-      <option value="" disabled selected>-- メインカテゴリーを選択 --</option>
+      <option value="" disabled selected>---</option>
       @foreach($main_categories as $main_category)
         <option value="{{ old('main_category_id', $main_category->id) }}">{{ $main_category->main_category }}</option>
       @endforeach
     </select>
     @if ($errors->has('sub_category_name'))
-      <p class="text-danger">{{ $errors->first('sub_category_name') }}</p>
+      <p class="text-danger" style="margin-bottom:0px">{{ $errors->first('sub_category_name') }}</p>
     @endif
     <!-- サブカテゴリー入力 -->
-    <input type="text" class="w-100" name="sub_category_name" placeholder="サブカテゴリー名" form="subCategoryRequest" value="{{ old('sub_category_name') }}">
-    <input type="submit" value="追加" class="w-100 btn btn-success p-0 mt-2" form="subCategoryRequest">
+    <input type="text" class="w-100 " name="sub_category_name" form="subCategoryRequest" value="{{ old('sub_category_name') }}">
+    <input type="submit" value="追加" class="w-100 btn btn-primary p-0 " style="margin-top:15px;" form="subCategoryRequest">
   </div>
   <form action="{{ route('sub.category.create') }}" method="post" id="subCategoryRequest">
     @csrf

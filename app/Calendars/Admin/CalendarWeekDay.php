@@ -15,9 +15,10 @@ class CalendarWeekDay{
     return "day-" . strtolower($this->carbon->format("D"));
   }
 
-  function render(){
-    return '<p class="day">' . $this->carbon->format("j") . '日</p>';
-  }
+function render(){
+    return '<p class="day calendar-day-number">' . $this->carbon->format("j") . '日</p>';
+}
+
 
   function everyDay(){
     return $this->carbon->format("Y-m-d");

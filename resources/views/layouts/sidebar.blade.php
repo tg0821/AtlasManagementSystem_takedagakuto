@@ -20,15 +20,15 @@
     <body class="all_content">
         <div class="d-flex">
             <div class="sidebar">
-                <p><a href="{{ route('top.show') }}">トップ</a></p>
-                <p><a href="/logout">ログアウト</a></p>
-                <p><a href="{{ route('calendar.general.show',['user_id' => Auth::id()]) }}">スクール予約</a></p>
+                <p><a href="{{ route('top.show') }}"><img src="{{ asset('image/190_b_24.png') }}" class=top>トップ</a></p>
+                <p><a href="/logout"><img src="{{ asset('image/lock_open_hoso.png') }}" class=logout>ログアウト</a></p>
+                <p><a href="{{ route('calendar.general.show',['user_id' => Auth::id()]) }}"><img src="{{ asset('image/calendar_31st_hoso.png') }}" class=reserve>スクール予約</a></p>
                 @if (in_array(Auth::user()->role, [1, 2, 3]))
-                <p><a href="{{ route('calendar.admin.show',['user_id' => Auth::id()]) }}">スクール予約確認</a></p>
-                <p><a href="{{ route('calendar.admin.setting',['user_id' => Auth::id()]) }}">スクール枠登録</a></p>
+                <p><a href="{{ route('calendar.admin.show',['user_id' => Auth::id()]) }}"><img src="{{ asset('image/calendar_check_24.png') }}" class=check>スクール予約確認</a></p>
+                <p><a href="{{ route('calendar.admin.setting',['user_id' => Auth::id()]) }}"><img src="{{ asset('image/737_pe_h.png') }}" class=check-list>スクール枠登録</a></p>
                 @endif
-                <p><a href="{{ route('post.show') }}">掲示板</a></p>
-                <p><a href="{{ route('user.show') }}">ユーザー検索</a></p>
+                <p><a href="{{ route('post.show') }}"><img src="{{ asset('image/1060_cm_h.png') }}" class=tl>掲示板</a></p>
+                <p><a href="{{ route('user.show') }}"><img src="{{ asset('image/101_h_24.png') }}" class=user-serch>ユーザー検索</a></p>
             </div>
             <div class="main-container">
                 {{ $slot }}
