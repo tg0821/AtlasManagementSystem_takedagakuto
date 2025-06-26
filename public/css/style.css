@@ -376,7 +376,7 @@ li {
 
 .search_conditions_inner {
   display: none;
-  background: #FFF;
+  background: transparent;
 }
 
 .subject_edit_btn {
@@ -487,4 +487,20 @@ tr:nth-child(even) {
 
 .calendar table tr:nth-child(even) {
   background-color: white !important;
+}
+
+.choices {
+  display: flex;
+}
+
+.selected_engineer {
+  display: flex;
+}
+
+.engineer {
+  border: none;
+  background-color: #e0e5e9;
+  /* background-color: transparent; */
+  padding: 10px;
+  border-radius: 5px;
 }

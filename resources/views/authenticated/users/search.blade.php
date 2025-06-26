@@ -56,7 +56,7 @@
     </div>
     @endforeach
   </div>
-  <div class="search_area w-25 border" style="background-color:transparent;">
+  <div class="search_area w-25" style="background-color:transparent;">
     <div class="">
       <div style="display: flex; flex-direction: column;">
         <p style="margin-top:30px; color:#4a6a87">検索</p>
@@ -83,16 +83,16 @@
         </select>
       </div>
       <div class="">
-        <p class="m-0 search_conditions" ><span style="color:#4a6a87">検索条件の追加<span class="search-icon"></span></p>
+        <p class="m-0 search_conditions" style="border_bottom:1px solid;" ><span style="color:#4a6a87">検索条件の追加<span class="search-icon"></span></p>
         <div class="search_conditions_inner">
           <div>
-            <label>性別</label>
+            <label class="choices" style="color: #4a6a87;margin-top:8px;">性別</label>
             <span>男</span><input type="radio" name="sex" value="1" form="userSearchRequest">
             <span>女</span><input type="radio" name="sex" value="2" form="userSearchRequest">
             <span>その他</span><input type="radio" name="sex" value="3" form="userSearchRequest">
           </div>
           <div>
-            <label>権限</label>
+            <label class="choices" style="color: #4a6a87;">権限</label>
             <select name="role" form="userSearchRequest" class="engineer">
               <option selected disabled>----</option>
               <option value="1">教師(国語)</option>
@@ -101,22 +101,31 @@
               <option value="4" class="">生徒</option>
             </select>
           </div>
+          <label style="margin-top:5px; color: #4a6a87;">選択科目</label>
           <div class="selected_engineer">
-            <label>選択科目</label>
               @foreach($subjects as $subject)
                 <label style="display: block;">
+                {{ $subject->subject }}
                 <input type="checkbox" name="subject_id[]" value="{{ $subject->id }}" form="userSearchRequest">
-                 {{ $subject->subject }}
                 </label>
                @endforeach
           </div>
         </div>
       </div>
-      <div>
-        <input type="submit" name="search_btn" value="検索" form="userSearchRequest">
+      <div >
+        <input type="submit" name="search_btn" value="検索" form="userSearchRequest" style="width:85%;margin-top: 35px;border: none;
+    background-color: #09a9d2;
+    border-radius: 5px;
+    color: white;
+    padding: 7px 0px;">
       </div>
       <div>
-        <input type="reset" value="リセット" form="userSearchRequest">
+        <input type="reset" value="リセット" form="userSearchRequest" style="    border: none;
+    background-color: transparent;
+    color: #09a9d2;
+    margin-top: 20px;
+    /* text-align: center; */
+    width: 85%;">
       </div>
     </div>
     <form action="{{ route('user.show') }}" method="get" id="userSearchRequest"></form>
