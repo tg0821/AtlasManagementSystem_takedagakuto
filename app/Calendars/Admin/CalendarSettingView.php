@@ -44,7 +44,7 @@ class CalendarSettingView{
         }else{
           $html[] = '<td class="border '.$day->getClassName().'">';
         }
-        $html[] = '<div class="calendar-day-number">'.$day->render().'</div>';
+        $html[] = $day->render(); // これだけにする
         $html[] = '<div class="adjust-area">';
         if($day->everyDay()){
           if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()){

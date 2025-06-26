@@ -126,6 +126,7 @@ li {
 
 .adjust-table td {
   padding: 0 !important;
+  background-color: white;
 }
 
 .adjust-area p {
@@ -138,6 +139,7 @@ li {
 
 .calendar-td {
   border: 1px solid #dee2e6;
+  background-color: white;
 }
 
 /* モーダル */
@@ -481,4 +483,8 @@ tr:nth-child(even) {
 .day-sun .calendar-day-number {
   color: red !important;
   /* 日曜は赤 */
+}
+
+.calendar table tr:nth-child(even) {
+  background-color: white !important;
 }
