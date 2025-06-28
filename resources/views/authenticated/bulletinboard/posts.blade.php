@@ -5,8 +5,18 @@
     @foreach($posts as $post)
     <div class="post_area border w-75 m-auto p-3">
       <p><span>{{ $post->user->over_name }}</span><span class="ml-3">{{ $post->user->under_name }}</span>さん</p>
-      <div class="post_bottom_area d-flex">
-      <p><a href="{{ route('post.detail', ['id' => $post->id]) }}" class="small-ball">{{ $post->post_title }}</a></p>
+      <div class="post_bottom_area">
+      <!-- <p><a href="{{ route('post.detail', ['id' => $post->id]) }}" class="small-ball">{{ $post->post_title }}</a></p> -->
+      <p><a href="{{ route('post.detail', ['id' => $post->id]) }}" style="color: black;
+    font-weight: bold;">{{ $post->post_title }}</a></p>
+    @if($post->subCategories && $post->subCategories->count())
+  <ul class="subcategories" style="width: fit-content;">
+    @foreach($post->subCategories as $subCategory)
+      <li class="small-ball">{{ $subCategory->sub_category }}</li>
+    @endforeach
+  </ul>
+@endif
+
         <div class="d-flex post_status">
           <div class="mr-5">
            <i class="fa fa-comment"></i><span class="ml-1">{{ $post->postComments->count() }}</span>
@@ -32,13 +42,13 @@
   <div class="other_area w-25" style="background-color: transparent;">
   <div class="m-4">
     <!-- 投稿作成リンク -->
-    <p class="tweet"><a href="{{ route('post.input') }}" style="color:white; display: block; width: 100%;">投稿</a></p>
+    <p class="tweet"><a href="{{ route('post.input') }}" style="color:white; display: block; width: 100%;padding: 8px 0px;">投稿</a></p>
 
     <!-- キーワード検索フォーム -->
     <div class="">
         <input type="text" placeholder="キーワードを検索" name="keyword" form="postSearchRequest" style="border-radius: 8px;
     border-width: 1px;
-    border: 1px solid #dee2e6;">
+    border: 1px solid #dee2e6;padding:8px 0px;">
         <input type="submit" value="検索" form="postSearchRequest" class="search">
     </div>
     <div style="display: flex;">

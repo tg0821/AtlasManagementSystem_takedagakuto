@@ -30,12 +30,13 @@
         <p>上記の予約をキャンセルしてもいいですか？</p>
       </div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+      <div class="modal-footer" style="justify-content: space-between;">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="    background-color: #027bff;
+    border: none;">閉じる</button>
         <form action="/delete/calendar" method="post" id="deleteParts">
           @csrf
           <input type="hidden" name="delete_date" id="modalDeleteDateValue">
-          <button type="submit" class="btn btn-danger">キャンセルする</button>
+          <button type="submit" class="btn btn-danger">キャンセル</button>
         </form>
       </div>
 

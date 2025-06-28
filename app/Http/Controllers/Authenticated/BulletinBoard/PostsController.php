@@ -32,14 +32,14 @@ public function show(Request $request)
     $categories = MainCategory::with('subCategories')->get();
 
     // 投稿取得の初期状態
-    $posts = Post::with('user', 'postComments', 'likes');
+    $posts = Post::with('user', 'postComments', 'likes','subCategories');
 
     // ① 検索キーワードがサブカテゴリー名と完全一致
     if (!empty($request->keyword)) {
         $subCategory = SubCategory::where('sub_category', $request->keyword)->first();
         if ($subCategory) {
             // サブカテゴリーが見つかった場合、そのサブカテゴリーに属する投稿のみ取得
-            $posts = $subCategory->posts()->with('user', 'postComments', 'likes');
+            $posts = $subCategory->posts()->with('user', 'postComments', 'likes', 'subCategories');
         } else {
             // タイトルまたは本文で部分一致検索
             $posts = $posts->where('post_title', 'like', '%' . $request->keyword . '%')
@@ -75,7 +75,7 @@ public function show(Request $request)
 
 
     public function postDetail($post_id){
-        $post = Post::with('user', 'postComments')->findOrFail($post_id);
+        $post = Post::with('user', 'postComments', 'subCategories')->findOrFail($post_id);
         return view('authenticated.bulletinboard.post_detail', compact('post'));
     }
 

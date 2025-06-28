@@ -29,6 +29,7 @@ li {
 
 .atlas {
   max-width: 153px;
+  margin-bottom: 100px;
 }
 
 /* 新規登録 */
@@ -39,7 +40,7 @@ li {
 /* サイドバー */
 .sidebar {
   width: 180px;
-  height: 100vh;
+  /* height: 100vh; */
   background-color: #03AAD2;
   font-weight: bold;
 }
@@ -231,7 +232,8 @@ li {
   border: none;
   color: #FFF;
   border-radius: 5px;
-  width: 40px;
+  width: 100px;
+  padding: 8px 0px;
 }
 
 /* 掲示板 詳細画面 */
@@ -241,11 +243,11 @@ li {
   font-weight: bold;
 }
 
-.detsail_post_title {
+/* .detsail_post_title {
   font-size: 14px;
   display: flex;
   justify-content: space-between;
-}
+} */
 
 .detsail_post {
   font-size: 12px;
@@ -350,12 +352,13 @@ li {
   flex-wrap: wrap;
   width: 800px;
   margin: 10px auto;
-  height: 80vh;
+  height: 100vh;
   overflow: scroll;
   padding: 10px;
   /* background: #FFF; */
   border-radius: 5px;
-  justify-content: space-around;
+  justify-content: flex-start;
+  overflow-x: hidden;
 }
 
 .reserve_users_area span {
@@ -368,6 +371,7 @@ li {
   border-radius: 10px;
   background-color: white;
   margin-bottom: 20px;
+  margin-left: 10px;
 }
 
 .search_conditions span {

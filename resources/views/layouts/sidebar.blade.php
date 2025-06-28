@@ -19,7 +19,7 @@
     </head>
     <body class="all_content">
         <div class="d-flex">
-            <div class="sidebar">
+            <div class="vh-100 sidebar">
                 <p><a href="{{ route('top.show') }}"><img src="{{ asset('image/190_b_24.png') }}" class=top>トップ</a></p>
                 <p><a href="/logout"><img src="{{ asset('image/lock_open_hoso.png') }}" class=logout>ログアウト</a></p>
                 <p><a href="{{ route('calendar.general.show',['user_id' => Auth::id()]) }}"><img src="{{ asset('image/calendar_31st_hoso.png') }}" class=reserve>スクール予約</a></p>
@@ -30,7 +30,7 @@
                 <p><a href="{{ route('post.show') }}"><img src="{{ asset('image/1060_cm_h.png') }}" class=tl>掲示板</a></p>
                 <p><a href="{{ route('user.show') }}"><img src="{{ asset('image/101_h_24.png') }}" class=user-serch>ユーザー検索</a></p>
             </div>
-            <div class="main-container">
+            <div class="vh-100 main-container">
                 {{ $slot }}
             </div>
         </div>
