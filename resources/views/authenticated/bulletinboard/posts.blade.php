@@ -9,33 +9,34 @@
       <!-- <p><a href="{{ route('post.detail', ['id' => $post->id]) }}" class="small-ball">{{ $post->post_title }}</a></p> -->
       <p><a href="{{ route('post.detail', ['id' => $post->id]) }}" style="color: black;
     font-weight: bold;">{{ $post->post_title }}</a></p>
+            </div>
+                    <div style="display: flex;justify-content: space-between;">
     @if($post->subCategories && $post->subCategories->count())
-  <ul class="subcategories" style="width: fit-content;">
+  <div class="subcategories" style="width: fit-content;">
     @foreach($post->subCategories as $subCategory)
-      <li class="small-ball">{{ $subCategory->sub_category }}</li>
+      <p class="small-ball">{{ $subCategory->sub_category }}</p>
     @endforeach
-  </ul>
-@endif
-
-        <div class="d-flex post_status">
-          <div class="mr-5">
-           <i class="fa fa-comment"></i><span class="ml-1">{{ $post->postComments->count() }}</span>
-          </div>
-          <div>
+  </div>
+    @endif
+        <!-- <div class="d-flex post_status"> -->
+          <div class="" style="display: flex;justify-content: end;">
+           <i class="fa fa-comment" style=""></i><span class="ml-1">{{ $post->postComments->count() }}</span>
+            <!-- <div> -->
             @if(Auth::user()->is_Like($post->id))
-            <p class="m-0">
-             <i class="fas fa-heart un_like_btn" post_id="{{ $post->id }}"></i>
+            <!-- <p class="m-0"> -->
+             <i class="fas fa-heart un_like_btn" post_id="{{ $post->id }}" style="margin-left: 35px;"></i>
              <span class="like_counts{{ $post->id }}">{{ $post->likes->count() }}</span>
-            </p>
+            <!-- </p> -->
             @else
-            <p class="m-0">
-             <i class="fas fa-heart like_btn" post_id="{{ $post->id }}"></i>
+            <!-- <p class="m-0"> -->
+             <i class="fas fa-heart like_btn" post_id="{{ $post->id }}" style="margin-left: 35px;"></i>
              <span class="like_counts{{ $post->id }}">{{ $post->likes->count() }}</span>
-            </p>
+            <!-- </p> -->
             @endif
           </div>
-        </div>
-      </div>
+          </div>
+            <!-- </div> -->
+          <!-- </div> -->
     </div>
     @endforeach
   </div>
