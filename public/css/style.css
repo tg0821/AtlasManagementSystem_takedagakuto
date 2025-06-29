@@ -9,6 +9,7 @@
 /* body */
 .all_content {
   background: #ECF1F6;
+  overflow-y: hidden;
 }
 
 ul,
