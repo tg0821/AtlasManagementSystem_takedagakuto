@@ -48,6 +48,7 @@ li {
 
 .main-container {
   width: 100%;
+  overflow-y: scroll;
 }
 
 .sidebar p a {
@@ -351,7 +352,7 @@ li {
 .reserve_users_area {
   display: flex;
   flex-wrap: wrap;
-  width: 800px;
+  width: 100%;
   margin: 10px auto;
   height: 100vh;
   overflow: scroll;

@@ -1,6 +1,6 @@
 <x-sidebar>
 <div class="board_area w-100 border m-auto d-flex">
-  <div class="post_view w-75 mt-5 vh-100" style="overflow-y: scroll;">
+  <div class="post_view w-75 mt-5 vh-100" >
     <!-- <p class="w-75 m-auto">投稿一覧</p> -->
     @foreach($posts as $post)
     <div class="post_area border w-75 m-auto p-3">
@@ -40,7 +40,7 @@
     </div>
     @endforeach
   </div>
-  <div class="other_area w-25" style="background-color: transparent;">
+  <div class="other_area w-25" style="background-color: transparent;position: fixed;right: 0;">
   <div class="m-4">
     <!-- 投稿作成リンク -->
     <p class="tweet"><a href="{{ route('post.input') }}" style="color:white; display: block; width: 100%;padding: 8px 0px;">投稿</a></p>
